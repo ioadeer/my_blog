@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+	<h1> Posts </h1>
+
+	{% for post in post_list %}
+	<li class="posts-list">
+		<a href="{{ post.get_absolute_url }}"> {{ post.title}} </a>
+	</li>
+	{% endfor %}
+{% endblock %}

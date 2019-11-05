@@ -1,0 +1,26 @@
+body{
+	padding-top: 30px;
+	font-family: 'Rajdhani', sans-serif;
+	background-color: white;
+}
+.sidebar-nav{
+	margin-top: 20px;
+	padding: 0;
+	list-style: none;
+}
+
+nav ul li a{
+	color: #fff;
+}
+
+.nav-item:hover{
+	background-color:#555;
+}
+
+.nav-link:hover{
+	color: white;
+}
+
+.posts-list{
+	list-style:none;	
+}
