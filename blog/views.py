@@ -17,3 +17,12 @@ class PostListView(generic.ListView):
 def view_post(request, slug):
     context = {'post': get_object_or_404(Post, slug=slug)}
     return render(request, 'blog/post_detail.html',context)
+
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+class PostCreate(CreateView):
+    model = Post
+    fields = ['author', 'title', 'text', 'categories',] 
+
+class PostUpdate(UpdateView):
+    model = Post
+    fields = ['title', 'text', 'categories']

@@ -24,9 +24,21 @@
 						<li class="nav-item">
 							<a class="nav-link" href="{% url 'all-posts' %}">Posts</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Un item</a>
-						</li>
+						{% if user.is_authenticated %}
+							<li class="nav-item">
+								<a class="nav-link">{{ user.get_username }}</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{% url 'post-create' %}">Create Post</a>
+							</li>
+							<li class="nav-item">
+								<a href="{% url 'logout'%}?next={{request.path}}">logout</a>
+							</li>
+						{% else %}
+							<li class="nav-item">
+								<a href="{% url 'login'%}?next={{request.path}}">Login</a>
+							</li>
+						{% endif %}
 					</ul>
 				</nav>
 				{% endblock %}
