@@ -10,10 +10,6 @@
 	{% if user.is_authenticated %}
 		<div>
 			<button type="button"><a class="btn btn=primary" href="{% url 'post-update' post.slug %}"> Edit </a></button>
-			<!--
-			<input type="submit" href="{% url 'post-update' post.slug %}" value="Edit">
-			<input type="submit" value="Redirect">
-			--!>
 		</div>
 	{% endif %}
 </div>
