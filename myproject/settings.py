@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 's6ns5gx4d)rt0%-4b1g18(1c32cm#y
 #DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['https://my-django-postgres-blog.herokuapp.com/','my-django-postgres-blog','127.0.0.1','0.0.0.0']
+ALLOWED_HOSTS = ['my-django-postgres-blog.herokuapp.com','my-django-postgres-blog','127.0.0.1','0.0.0.0']
 
 # Application definition
 
