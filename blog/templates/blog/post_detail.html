@@ -9,7 +9,10 @@
 	</div>
 	{% if user.is_authenticated %}
 		<div>
+			<!-- <p> {{ user.username }} </p> !-->
+			{% if request.user.username == post.author.username %} 
 			<button type="button"><a class="btn btn=primary" href="{% url 'post-update' post.slug %}"> Edit </a></button>
+			{% endif %}
 		</div>
 	{% endif %}
 </div>

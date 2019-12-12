@@ -21,6 +21,10 @@ class Post(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
     categories = models.ManyToManyField('Category', related_name='posts')
 
+    class Meta:
+        ordering = ['created_on']
+        permissions = (("create_post", "Can create post"), ("edit_post", "Can edit post"),)
+
     def save(self, *args, **kwargs):
         tempslug = slugify(self.title)
         if self.id:
