@@ -9,6 +9,10 @@ body{
 	list-style: none;
 }
 
+ul{
+	list-style-type: none;
+}
+
 nav ul li a{
 	color: #fff;
 }
@@ -23,4 +27,8 @@ nav ul li a{
 
 .posts-list{
 	list-style:none;	
+}
+
+.categories{
+	font-size: 0.75em;
 }
