@@ -19,6 +19,7 @@
 	{% if user.is_authenticated %}
 		<div>
 			<!-- <p> {{ user.username }} </p> !-->
+			<!-- comentario agregado para actualizar !-->
 			{% if request.user.username == post.author.username %} 
 			<button type="button"><a class="btn btn=primary" href="{% url 'post-update' post.slug %}"> Edit </a></button>
 			<button type="button"><a class="btn btn=primary" href="{% url 'post-delete' post.slug %}"> Delete </a></button>
