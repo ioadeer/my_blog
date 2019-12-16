@@ -59,7 +59,7 @@ def create_post(request):
             category_queryset = form.cleaned_data['categories']
             #print(category_queryset)
             post.categories.set(category_queryset)
-            set_trace()
+            #set_trace()
             post.save()
             return HttpResponseRedirect(reverse('all-posts'))
     else:
