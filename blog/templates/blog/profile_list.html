@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+	<h1> Users </h1>
+	<dl>
+	{% for profile in profile_list %}
+	<dt><a href="{% url 'profile-detail' profile.pk %}"> {{ profile.user.username }}</a></dt>
+	<dd>{{ profile.bio }}</dd>
+	
+	{% endfor %}
+	</dl>
+{% endblock %}

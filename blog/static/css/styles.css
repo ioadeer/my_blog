@@ -3,6 +3,8 @@ body{
 	font-family: 'Rajdhani', sans-serif;
 	background-color: white;
 }
+
+
 .sidebar-nav{
 	margin-top: 20px;
 	padding: 0;
@@ -15,6 +17,10 @@ ul{
 
 nav ul li a{
 	color: #fff;
+}
+
+.nav-item{
+	width: inherit;
 }
 
 .nav-item:hover{
@@ -31,4 +37,12 @@ nav ul li a{
 
 .categories{
 	font-size: 0.75em;
+}
+
+.nav-item-search{
+	
+}
+
+#search-form{
+	margin-top: 20px;
 }

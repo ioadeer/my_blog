@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+	{% if query %}
+	<h2> Results for "{{ query|escape }}" </h2>
+
+		{% if results %}
+			<ul>
+			{% for post in results %}			
+				<li>
+					<a href="{{ post.get_absolute_url }}">{{post.title}}</a>, {{ post.author }}
+				</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	{% endif %}
+{% endblock %}

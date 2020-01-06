@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+	
+<h1>{{ profile.user.last_name }}, {{ profile.user.first_name }}</h1>
+<h2> was born on {{ profile.birth_date }} and lives in {{ profile.location }} </h2>
+<p> {{ profile.bio }} </p>
+
+{% endblock %}

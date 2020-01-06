@@ -69,4 +69,62 @@ def create_post(request):
         }
         return render(request,'blog/create_post.html',context)
 
+from django.db.models import Q
+def search(request):
+    query = request.GET.get('q', '')
+    if query:
+        qset = (
+                Q( title__icontains=query ) |
+                Q( author__username__icontains=query ) |
+                Q( text__icontains= query ) |
+                Q( categories__name__icontains=query )
+        )
+        results = Post.objects.filter(qset).distinct()
+
+    else:
+        results = []
+
+    return render(request, 'blog/search.html', {
+        "results" : results,
+        "query" : query,
+        })
+
+from blog.models import Profile
+from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from blog.forms import UserForm, ProfileForm
+from django.shortcuts import redirect
+
+# de aca https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
+@login_required
+@transaction.atomic
+def update_profile(request):
+    #set_trace()
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance = request.user)
+        profile_form = ProfileForm(request.POST, instance= request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, _('Your profile was successfully updated!'))
+            #return redirect('settings:profile')
+            return HttpResponseRedirect(reverse('profile-detail', args=[str(request.user.profile.id)]))
+        else:
+            messages.error(request, _('Please correct the error below.'))
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+
+    return render(request, 'blog/profile_update.html',{
+        'user_form': user_form,
+        'profile_form': profile_form,
+        })
+
+class ProfileListView(generic.ListView):
+    model = Profile 
+
+class ProfileDetailView(generic.DetailView):
+    model = Profile
 
