@@ -8,7 +8,7 @@
 			<ul>
 			{% for post in results %}			
 				<li>
-					<a href="{{ post.get_absolute_url }}">{{post.title}}</a>, {{ post.author }}
+					<a href="{{ post.get_absolute_url }}">{{post.title}}</a>, <a href="{% url 'profile-detail' post.author.profile.pk %}">  {{ post.author }} </a>
 				</li>
 			{% endfor %}
 			</ul>

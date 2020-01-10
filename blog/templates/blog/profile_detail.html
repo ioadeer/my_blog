@@ -2,8 +2,22 @@
 
 {% block content %}
 	
-<h1>{{ profile.user.last_name }}, {{ profile.user.first_name }}</h1>
-<h2> was born on {{ profile.birth_date }} and lives in {{ profile.location }} </h2>
-<p> {{ profile.bio }} </p>
+	<div>
+	<h1>{{ profile.user.last_name }}, {{ profile.user.first_name }}</h1>
+	<h2> was born on {{ profile.birth_date }} and lives in {{ profile.location }} </h2>
+	<p> {{ profile.bio }} </p>
+	</div>
+	{% if posts %}
+	<div>
+		<h3> Posts by {{ profile.user.first_name }} {{ profile.user.last_name }}</h3>
+		<ul>
+			{% for post in posts %}
+			<li>
+				<a href="{{ post.get_absolute_url }}"> {{ post.title}} </a>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
 
 {% endblock %}

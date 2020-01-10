@@ -16,6 +16,7 @@ urlpatterns = [
 
 urlpatterns += [
     path('profiles', views.ProfileListView.as_view(), name='all-profiles'),
-    path('profile/<int:pk>', views.ProfileDetailView.as_view(), name='profile-detail')
+    #path('profile/<int:pk>', views.ProfileDetailView.as_view(), name='profile-detail')
+    path('profile/<int:pk>', views.ProfileDetailView, name='profile-detail')
     ]
 

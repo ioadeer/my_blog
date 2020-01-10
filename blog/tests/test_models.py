@@ -30,10 +30,6 @@ class PostModelTestClass(TestCase):
         post = Post.objects.get(id=1)
         self.assertEquals("title", post.__str__())
 
-    def test_dummy_false_is_false(self):
-        print("dummy")
-        self.assertFalse(False)
-
     def test_slug_creation_method(self):
 
         """ Test creation method which appends a number at the end of the slug

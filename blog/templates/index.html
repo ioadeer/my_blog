@@ -2,6 +2,28 @@
 
 {% block content %}
 
-<h1> Index page </h1>
+<h1> Joaquin's Practice Blog </h1>
+
+	{% if posts %}
+		<h2> Most recents posts </h2>
+		<ul>
+		{% for post in posts %}
+			<li>
+					<a href="{{ post.get_absolute_url }}">{{post.title}}</a>, <a href="{% url 'profile-detail' post.author.profile.pk %}">  {{ post.author }} </a>
+			</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+
+	{% if profiles %}
+		<h2> Some of the authors </h2>
+		<ul>
+		{% for profile in profiles %}
+			<li>
+				<a href="{% url 'profile-detail' profile.pk %}"> {{ profile.user.username }}</a>
+			</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
 
 {% endblock %}

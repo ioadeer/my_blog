@@ -26,13 +26,16 @@
 						</li>
 						{% if user.is_authenticated %}
 							<li class="nav-item">
-								<a class="nav-link">{{ user.get_username }}</a>
+								<a class="nav-link" href="{% url 'profile-detail' user.profile.pk %}">{{ user.get_username }}</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="{% url 'create-post' %}">Create Post</a>
 							</li>
 							<li class="nav-item">
-								<a href="{% url 'logout'%}?next={{request.path}}">logout</a>
+								<a href="{% url 'profile-update'%}">Update profile</a>
+							</li>
+							<li class="nav-item">
+								<a href="{% url 'logout'%}?next={{request.path}}">Logout</a>
 							</li>
 						{% else %}
 							<li class="nav-item">

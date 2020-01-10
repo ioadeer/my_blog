@@ -5,7 +5,7 @@
 
 	{% for post in post_list %}
 	<li class="posts-list">
-		<a href="{{ post.get_absolute_url }}"> {{ post.title}} </a>
+		<a href="{{ post.get_absolute_url }}"> {{ post.title}} </a>, <a href="{% url 'profile-detail' post.author.profile.pk %}">  {{ post.author }} </a>
 	</li>
 	{% endfor %}
 {% endblock %}

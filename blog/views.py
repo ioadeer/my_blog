@@ -3,7 +3,13 @@ from blog.models import Post, Category
 # Create your views here.
 
 def index(request):
-   return render(request,'index.html')
+    posts = Post.objects.all().order_by('-created_on')[:5]
+    profiles = Profile.objects.all()[:3]
+    context ={
+            'posts': posts,
+            'profiles': profiles,
+            }
+    return render(request,'index.html', context)
 
 from django.views import generic 
 from django.contrib.auth.decorators import permission_required
@@ -125,6 +131,14 @@ def update_profile(request):
 class ProfileListView(generic.ListView):
     model = Profile 
 
-class ProfileDetailView(generic.DetailView):
-    model = Profile
+#class ProfileDetailView(generic.DetailView):
+#    model = Profile
 
+def ProfileDetailView(request, pk):
+    profile = get_object_or_404(Profile, pk = pk)
+    posts = Post.objects.filter( author__exact=profile.user ).order_by( 'created_on' )
+    context = {
+            'profile': profile, 
+            'posts' : posts,
+            }
+    return render( request, 'blog/profile_detail.html', context)
