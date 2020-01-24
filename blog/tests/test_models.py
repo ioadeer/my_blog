@@ -4,7 +4,6 @@ from blog.models import Post, Category
 from django.contrib.auth.models import User
 
 class PostModelTestClass(TestCase):
-#class AnotherTest( TestCase ):
 
     @classmethod
     def setUpTestData(cls):
@@ -42,3 +41,23 @@ class PostModelTestClass(TestCase):
             post = Post.objects.get(id=i+1)
             slug += "-"+str(i)
             self.assertEquals(slug,post.slug) 
+
+    def test_get_absolute_url(self):
+        """Get absoulute url method """
+        post = Post.objects.get(id=1)
+        url = '/blog/posts/' + post.slug.__str__()
+        self.assertEquals(post.get_absolute_url(), url)
+
+    def test_to_dict(self):
+
+        """To dict method in order to serialize instance and convert it to json
+        """
+
+        post = Post.objects.get(id=1)
+        data = {
+            'title' : post.title,
+            'author': post.author.username,
+            'first_name' : post.author.first_name,
+            'last_name'  : post.author.last_name,
+            }
+        self.assertDictEqual(data, post.to_dict())

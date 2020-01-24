@@ -41,6 +41,16 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post-detail',args=[self.slug])
+    
+    def to_dict(self):
+        data = {
+            'title' : self.title,
+            'author': self.author.username,
+            'first_name': self.author.first_name,
+            'last_name': self.author.last_name,
+            }
+        return data
+
 
 def create_slug(tempslug):
     slugcount = 0

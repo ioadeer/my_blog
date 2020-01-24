@@ -18,7 +18,7 @@ from django.urls import reverse_lazy
 
 class PostListView(generic.ListView):
     model = Post
-    paginate_by = 50
+    paginate_by = 10
 
 class PostDetailView(generic.DetailView):
     model = Post
@@ -32,11 +32,24 @@ class PostCreate(CreateView):
     model = Post
     fields = ['author', 'title', 'text', 'categories',] 
 
-class PostUpdate(UpdateView):
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+
+class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['title', 'text', 'categories']
+    template_name_suffix = '_update_form'
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data( **kwargs )
+        if( self.request.user.username == context[ "post" ].author.username ):
+            return context
+        else:
+            raise PermissionDenied
 
 class PostDelete(PermissionRequiredMixin, DeleteView):
+
     permission_required = 'blog.delete_post'
     model = Post
     success_url = reverse_lazy('all-posts')
@@ -55,19 +68,16 @@ def create_post(request):
     if request.method == "POST":
         form =  CreatePostForm(request.POST)
         if form.is_valid():
-            #data = forms.cleaned_data
-            data = {'title': form.cleaned_data['title']}
+            data = { 'title': form.cleaned_data[ 'title' ]}
             user_name = request.user.username
-            user = User.objects.filter(username__exact=user_name).first()
-            data['author'] = user
-            data['text'] = form.cleaned_data['text']
-            post = Post.objects.create(**data)
-            category_queryset = form.cleaned_data['categories']
-            #print(category_queryset)
-            post.categories.set(category_queryset)
-            #set_trace()
+            user = User.objects.filter( username__exact=user_name ).first()
+            data[ 'author' ] = user
+            data[ 'text' ] = form.cleaned_data[ 'text' ]
+            post = Post.objects.create( **data )
+            category_queryset = form.cleaned_data[ 'categories' ]
+            post.categories.set( category_queryset )
             post.save()
-            return HttpResponseRedirect(reverse('all-posts'))
+            return HttpResponseRedirect( reverse( 'all-posts' ))
     else:
         form = CreatePostForm()
         context = {
@@ -142,3 +152,26 @@ def ProfileDetailView(request, pk):
             'posts' : posts,
             }
     return render( request, 'blog/profile_detail.html', context)
+
+import json
+from django.http import JsonResponse
+from django.core import serializers
+
+def autocomplete(request):
+
+    if request.method == 'GET':
+        query = request.GET.get('q', '')
+        if query:
+            qset = (
+                    Q( title__istartswith=query ) |
+                    Q( author__username__istartswith=query )
+            )
+            results = Post.objects.filter(qset).distinct()
+            results_as_dict_array = [result.to_dict() for result in results]
+            data = json.dumps(results_as_dict_array)
+        else:
+            data = {'data': 'fail'}
+    else:
+        data = {'data': 'fail'}
+
+    return JsonResponse(data,safe=False)

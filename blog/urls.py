@@ -20,3 +20,6 @@ urlpatterns += [
     path('profile/<int:pk>', views.ProfileDetailView, name='profile-detail')
     ]
 
+urlpatterns += [
+    path('ajax/search/', views.autocomplete, name='auto-complete')
+    ]

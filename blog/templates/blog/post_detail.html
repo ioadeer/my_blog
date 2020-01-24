@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<div>
+<div class="col-sm-10">
 	<h1> {{ post.title }}  </h1>
 	<h2><a href="{% url 'profile-detail' post.author.profile.pk %}">  {{ post.author }} </a></h2>
 	<div class="body-text">	
