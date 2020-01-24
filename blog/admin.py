@@ -7,7 +7,7 @@ from .models import Post, Category, Profile
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'text')
-    fields = [('title','author'), 'text']# 'categories']
+    fields = [('title','author'), 'text', 'categories']
 
 #admin.site.register(Category)
 @admin.register(Category)
