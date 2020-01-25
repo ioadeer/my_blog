@@ -24,8 +24,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True  
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = False 
+#DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = ['my-django-postgres-blog.herokuapp.com','my-django-postgres-blog','127.0.0.1','0.0.0.0']
 
@@ -139,3 +139,5 @@ DATABASES['default'].update(db_from_env)
 
 #import django_heroku
 django_heroku.settings(locals())
+#
+DJANGO_LOG_LEVEL=DEBUG

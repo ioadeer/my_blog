@@ -21,5 +21,5 @@ urlpatterns += [
     ]
 
 urlpatterns += [
-    path('ajax/search/', views.autocomplete, name='auto-complete')
+    #path('ajax/search/', views.autocomplete, name='auto-complete')
     ]
