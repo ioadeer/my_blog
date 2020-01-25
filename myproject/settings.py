@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
 ]
@@ -139,5 +140,3 @@ DATABASES['default'].update(db_from_env)
 
 #import django_heroku
 django_heroku.settings(locals())
-#
-DJANGO_LOG_LEVEL=DEBUG

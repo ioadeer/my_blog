@@ -2,7 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from blog.models import Post, Category
 # Create your views here.
 
+from pdb import set_trace
+
 def index(request):
+    #set_trace()
     posts = Post.objects.all().order_by('-created_on')[:5]
     profiles = Profile.objects.all()[:3]
     context ={
@@ -30,7 +33,7 @@ def view_post(request, slug):
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 class PostCreate(CreateView):
     model = Post
-    fields = ['author', 'title', 'text', 'categories',] 
+    fields = ['author', 'title', 'text', 'categories'] 
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -59,7 +62,6 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from pdb import set_trace
 
 @permission_required('blog.create_post')
 def create_post(request):
