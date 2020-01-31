@@ -148,7 +148,7 @@ class ProfileListView(generic.ListView):
 
 def ProfileDetailView(request, pk):
     profile = get_object_or_404(Profile, pk = pk)
-    posts = Post.objects.filter( author__exact=profile.user ).order_by( 'created_on' )
+    posts = Post.objects.filter( author__exact=profile.user ).order_by( 'created_on' )[:5]
     context = {
             'profile': profile, 
             'posts' : posts,

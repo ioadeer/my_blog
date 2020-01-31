@@ -1,11 +1,13 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-	<h1> Posts </h1>
+	<h1 class="text-center"> Posts </h1>
 
 	{% for post in post_list %}
 	<li class="posts-list">
-		<a href="{{ post.get_absolute_url }}"> {{ post.title}} </a>, <a href="{% url 'profile-detail' post.author.profile.pk %}">  {{ post.author }} </a>
+		<h2 class="post-title text-center"><a href="{{ post.get_absolute_url }}"> {{ post.title}} </a></h2>
+		<p class="text-center">by <i><a href="{% url 'profile-detail' post.author.profile.pk %}">  {{ post.author }} </a></i>, {{ post.created_on|date:"M d, Y"  }}</p>
+		<p class="text-justify"> {{ post.text|truncatewords:50 }} </p>
 	</li>
 	{% endfor %}
 {% endblock %}

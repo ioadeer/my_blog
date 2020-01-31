@@ -87,3 +87,16 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+class Comment(models.Model):
+    post = models.ForeignKey( Post, on_delete=models.CASCADE )
+    body_text = models.TextField( max_length= 500 )
+    post_date = models.DateTimeField( auto_now_add=True )
+    author = models.ForeignKey(
+            settings.AUTH_USER_MODEL, null=True, blank=True,
+            on_delete = models.SET_NULL)
+    author_name = models.CharField(
+            max_length=50, default='anonymous')
+    author_email = models.EmailField(blank= True)
+
+    def __str__(self):
+        return self.body_text
