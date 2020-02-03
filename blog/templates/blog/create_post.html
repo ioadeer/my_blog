@@ -3,9 +3,45 @@
 {% block content %}
 	<form action="" method="post">
 		{% csrf_token %}
-		<table>
+		<!--<table>
 			{{ form.as_table }}
-		</table>
-		<input type="submit" value="Submit">
+		</table> -->
+		<div class="form-group">
+		{% csrf_token %}
+		{{ form.non_field_errors }}
+			<div class="col-lg-6">
+				{{ form.title.errors }}
+				<label for="id_title"> Title: </label>
+				{{ form.title }}
+			</div>
+			<script>
+				var title = document.getElementById("id_title");
+				title.className += "form-control";
+			</script>
+			
+			<div class="col-lg-10">
+				{{ form.text.errors }}
+				<label for="id_text"> Text: </label>
+				{{ form.text }}
+			</div>
+			<script>
+				var text_area = document.getElementById("id_text");
+				text_area.className += "form-control"; 
+				text_area.rows = 30;
+			</script>
+			<div class="form-group">
+				<div class="col-lg-3">
+					{{ form.categories.errors }}
+					<label for="id_categories"> Categories: </label>
+					{{ form.categories }}
+				</div>
+			</div>
+			<script>
+				var categories = document.getElementById("id_categories");
+				categories.className += "custom-select";
+				categories.setAttribute("size", 2);
+			</script>
+		<input type="submit" value="Submit" class="form-control col-lg-2" >
+		</div>
 	</form>
 {% endblock %}
