@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post, Category
+from blog.models import Post, Category, Comment
 # Create your views here.
 
 from pdb import set_trace
@@ -23,14 +23,51 @@ class PostListView(generic.ListView):
     model = Post
     paginate_by = 10
 
+
+from blog.forms import UserCommentForm, CommentForm 
+
 class PostDetailView(generic.DetailView):
     model = Post
+    page_template = "blog/post_detail.html"
+
+    def post(self, request, *args, **kwargs):
+        self.object = post = self.get_object()
+        if request.user.is_authenticated:
+            form = UserCommentForm(request.POST)
+        else:
+            form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            if request.user.is_authenticated:
+                comment.user = request.user
+                comment.user_name = request.user
+                comment.user_email = request.user.email
+            comment.ip = '0.0.0.0'
+            comment.save()
+            return redirect(post.get_absolute_url())
+        context = self.get_context_data(object=post)
+        context['comment_form'] = form
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        if self.request.user.is_authenticated:
+            form = UserCommentForm()
+        else:
+            form = CommentForm()
+        context = {
+            'page_template': self.page_template,
+            'comment_form': form,
+            'comments': Comment.objects.filter(post=self.object.id).select_related()
+        }
+        return super(PostDetailView, self).get_context_data(**context)
 
 def view_post(request, slug):
     context = {'post': get_object_or_404(Post, slug=slug)}
     return render(request, 'blog/post_detail.html',context)
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
 class PostCreate(CreateView):
     model = Post
     fields = ['author', 'title', 'text', 'categories'] 
@@ -109,7 +146,7 @@ def search(request):
 
 from blog.models import Profile
 from django.contrib import messages
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from blog.forms import UserForm, ProfileForm
