@@ -41,11 +41,11 @@ class UserCommentForm(forms.ModelForm):
     error_msg = _(
             'Cannot be empty nor only contain spaces. Please fill in the field.')
 
-    bodytext = forms.CharField( widget = PagedownWidget() )
+    body_text = forms.CharField( widget = PagedownWidget() )
 
     class Meta:
         model = Comment
-        fields = ["bodytext"]
+        fields = ["body_text"]
         
         """ 
         The following snippet sets a max length area extracted from the
@@ -57,11 +57,11 @@ class UserCommentForm(forms.ModelForm):
         #    }
 
     def clean_bodytext(self):
-        bodytext = self.cleaned_data.get('bodytext')
-        if bodytext:
-            if not bodytext.strip():
+        body_text = self.cleaned_data.get('body_text')
+        if body_text:
+            if not body_text.strip():
                 raise forms.ValidationErro(self.error_msg)
-        return bodytext
+        return body_text
 
 class CommentForm(UserCommentForm):
 
@@ -74,7 +74,7 @@ class CommentForm(UserCommentForm):
 
     class Meta:
         model = Comment
-        fields = ("user_name", "user_email", "bodytext")
+        fields = ("user_name", "user_email", "body_text")
         #if MAX_LENGTH_TEXTAREA is not None:
         #    widgets = {
         #        'bodytext': forms.Textarea(attrs={'maxlength': MAX_LENGTH_TEXTAREA})

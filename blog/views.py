@@ -6,7 +6,7 @@ from pdb import set_trace
 
 def index(request):
     #set_trace()
-    posts = Post.objects.all().order_by('-created_on')[:5]
+    posts = Post.objects.all().order_by( '-created_on' )[:5]
     profiles = Profile.objects.all()[:3]
     context ={
             'posts': posts,
@@ -30,41 +30,33 @@ class PostDetailView(generic.DetailView):
     model = Post
     page_template = "blog/post_detail.html"
 
-    def post(self, request, *args, **kwargs):
-        self.object = post = self.get_object()
+def view_post(request, slug):
+    if request.method == "POST":
         if request.user.is_authenticated:
-            form = UserCommentForm(request.POST)
+            form = UserCommentForm( request.POST )
         else:
-            form = CommentForm(request.POST)
+            form = CommentForm( request.POST )
         if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
+            data = { 'body_text': form.cleaned_data[ 'body_text' ] }
+            post = get_object_or_404( Post, slug=slug )
+            data[ 'post' ]  = post
             if request.user.is_authenticated:
-                comment.user = request.user
-                comment.user_name = request.user
-                comment.user_email = request.user.email
-            comment.ip = '0.0.0.0'
+                data[ 'author' ] = request.user
+                data[ 'author_name' ] = request.user.username
+                data[ 'author_email' ] = request.user.email
+            comment = Comment.objects.create( **data )
             comment.save()
-            return redirect(post.get_absolute_url())
-        context = self.get_context_data(object=post)
-        context['comment_form'] = form
-        return self.render_to_response(context)
-
-    def get_context_data(self, **kwargs):
-        if self.request.user.is_authenticated:
+            return redirect( post.get_absolute_url() )
+    else:
+        if request.user.is_authenticated:
             form = UserCommentForm()
         else:
             form = CommentForm()
+        # aca falta agregar comments a context
         context = {
-            'page_template': self.page_template,
-            'comment_form': form,
-            'comments': Comment.objects.filter(post=self.object.id).select_related()
-        }
-        return super(PostDetailView, self).get_context_data(**context)
-
-def view_post(request, slug):
-    context = {'post': get_object_or_404(Post, slug=slug)}
-    return render(request, 'blog/post_detail.html',context)
+                'post': get_object_or_404( Post, slug=slug),
+                'comment_form': form,}
+        return render(request, 'blog/post_detail.html', context)
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -92,7 +84,7 @@ class PostDelete(PermissionRequiredMixin, DeleteView):
 
     permission_required = 'blog.delete_post'
     model = Post
-    success_url = reverse_lazy('all-posts')
+    success_url = reverse_lazy( 'all-posts' )
 
 from blog.forms import CreatePostForm 
 from django.contrib.auth.models import User
@@ -129,12 +121,12 @@ def search(request):
     query = request.GET.get('q', '')
     if query:
         qset = (
-                Q( title__icontains=query ) |
-                Q( author__username__icontains=query ) |
+                Q( title__icontains= query ) |
+                Q( author__username__icontains= query ) |
                 Q( text__icontains= query ) |
-                Q( categories__name__icontains=query )
+                Q( categories__name__icontains= query )
         )
-        results = Post.objects.filter(qset).distinct()
+        results = Post.objects.filter( qset ).distinct()
 
     else:
         results = []
@@ -156,7 +148,6 @@ from django.shortcuts import redirect
 @login_required
 @transaction.atomic
 def update_profile(request):
-    #set_trace()
     if request.method == 'POST':
         user_form = UserForm(request.POST, instance = request.user)
         profile_form = ProfileForm(request.POST, instance= request.user.profile)
@@ -199,18 +190,18 @@ from django.core import serializers
 def autocomplete(request):
 
     if request.method == 'GET':
-        query = request.GET.get('q', '')
+        query = request.GET.get( 'q' , '')
         if query:
             qset = (
                     Q( title__istartswith=query ) |
                     Q( author__username__istartswith=query )
             )
-            results = Post.objects.filter(qset).distinct()
-            results_as_dict_array = [result.to_dict() for result in results]
-            data = json.dumps(results_as_dict_array)
+            results = Post.objects.filter( qset ).distinct()
+            results_as_dict_array = [ result.to_dict() for result in results ]
+            data = json.dumps( results_as_dict_array )
         else:
-            data = {'data': 'fail'}
+            data = { 'data': 'fail' }
     else:
-        data = {'data': 'fail'}
+        data = { 'data' : 'fail' }
 
-    return JsonResponse(data,safe=False)
+    return JsonResponse( data, safe=False )

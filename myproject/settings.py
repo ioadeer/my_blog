@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
+    'pagedown.apps.PagedownConfig',
 ]
 
 MIDDLEWARE = [
