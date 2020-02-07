@@ -1,0 +1,20 @@
+{% load el_pagination_tags %}
+{% load markdownify %}
+{% if comments %}
+{% for comment in comments %}
+<div class="comment-post">
+	<article itemscope itemtype="http://schema.org/Comment" itemprop="comment">
+		<header>
+			<span itemprop="creator">{{ comment.author_name }}</span>
+				<time itemprop="dateCreated" datetime="{{ comment.post_date|date:'Y-m-d H:i:s' }}">
+					{{ comment.post_date }}
+				</time>
+		</header>
+		<span itemprop="text">
+			{{ comment.body_text | markdown | safe	}}
+		</span>
+		<hr />
+	</article>
+</div>
+{% endfor %}
+{% endif %}

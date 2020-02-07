@@ -53,9 +53,13 @@ def view_post(request, slug):
         else:
             form = CommentForm()
         # aca falta agregar comments a context
+        post = get_object_or_404( Post, slug=slug )
+        comments = Comment.objects.filter(post=post)
         context = {
                 'post': get_object_or_404( Post, slug=slug),
-                'comment_form': form,}
+                'comment_form': form,
+                'comments' : comments,
+                }
         return render(request, 'blog/post_detail.html', context)
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
