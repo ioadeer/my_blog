@@ -1,10 +1,118 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<form method="post">
+<form method="post" class="needs-validation" novalidate>
 	{% csrf_token %}
+
+	{% comment %}
 	{{ user_form.as_p }}
 	{{ profile_form.as_p }}
-	<button type="submit"> Save Changes </button>
+	{% endcomment %}
+	<!-- <button type="submit"> Save Changes </button> -->
+	<div class="form-group">
+		<div class="user-form">
+			{{ user_form.non_field_errors }}
+			<div class="form-row">
+				<div class="form-group col-md-4">
+					{{ user_form.first_name.errors }}
+					<label for="id_first_name"> First name: </label>
+					{{ user_form.first_name }}
+				</div>
+			<script>
+				var first_name = document.getElementById("id_first_name");
+				first_name.setAttribute("required", "");
+				first_name.className += "form-control";
+				first_name.placeholder = "{{ form.first_name.help_text }}";
+			</script>
+				<div class="form-group col-md-4">
+					{{ user_form.last_name.errors }}
+					<label for="id_last_name"> Last name: </label>
+					{{ user_form.last_name }}
+				</div>
+			<script>
+				var last_name = document.getElementById("id_last_name");
+				last_name.setAttribute("required", "");
+				last_name.className += "form-control";
+				last_name.placeholder = "{{ form.last_name.help_text }}";
+			</script>
+			<div class="form-group col-md-4">
+				{{ user_form.email.errors }}
+				<label for="id_email"> Email: </label>
+				{{ user_form.email }}
+			</div>
+			<script>
+				var email = document.getElementById("id_email");
+				email.setAttribute("required", "");
+				email.className += "form-control";
+				email.placeholder = "{{ form.email.help_text }}";
+			</script>
+		</div>
+		<div class="profile-form">
+			{{ profile_form.non_field_errors }}
+			<div class="form-row">
+				<div class="form-group col-md-3">
+					{{ profile_form.birth_date.errors }}
+					<label for="id_birth_date"> Birth date: </label>
+					{{ profile_form.birth_date }}
+				</div>
+				<script>
+					var birth_date = document.getElementById("id_birth_date");
+					birth_date.className = "form-control datepicker";
+
+					$('.datepicker').datepicker({
+   					 format: 'mm/dd/yyyy',
+    				 startDate: '-3d'
+					});
+				</script>
+				<div class="form-group col-md-5">
+					{{ profile_form.location.errors }}
+					<label for="id_location"> Location: </label>
+					{{ profile_form.location }}
+				</div>
+				<script>
+					var loc = document.getElementById("id_location");
+					loc.className += "form-control";
+					loc.placeholder = "{{ profile_form.location.help_text }}";
+				</script>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-12">
+					{{ profile_form.bio.errors }}
+					<label for="id_bio"> Bio </label>
+					{{ profile_form.bio }}
+				</div>
+				<script>
+					var text_area = document.getElementById("id_bio");
+					text_area.className += "form-control"; 
+					text_area.placeholder = "{{ form.bio.help_text }}";
+					text_area.rows = 5;
+				</script>
+			</div>
+		</div>
+		<input type="submit" value="Submit" class="form-control col-lg-2"> 
+	</div>
 </form>
+
+<script>
+
+	(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+	})();
+
+</script>
+
 {% endblock %}
