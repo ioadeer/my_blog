@@ -1,7 +1,7 @@
 {% load markdownify %}
 {% if comments %}
 {% for comment in comments %}
-<div class="comment-post">
+<div class="comment-post col-sm-12">
 	<article itemscope itemtype="http://schema.org/Comment" itemprop="comment">
 		<header>
 			<span itemprop="creator">{{ comment.author_name }}</span>
