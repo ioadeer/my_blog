@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, Profile
+from .models import Post, Category, Profile, Comment
 # Register your models here.
 
 #admin.site.register(Post)
@@ -17,3 +17,8 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user',)
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('author_name','post_date','body_text',)
+    fields = [('author_name', 'post'), 'body_text']
