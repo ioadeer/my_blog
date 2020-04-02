@@ -51,3 +51,14 @@ nav ul li a{
 	margin-top: 20px;
 }
 
+@media (max-width: 767px){
+#wmd-button-bar-id_body_text{
+	display: none;
+}
+}
+
+.col-sm-2{
+	background-color: #f9f9f9;
+	border-right: solid 1px #d9d59e45;
+	border-left: solid 1px #d9d59e45;
+}
