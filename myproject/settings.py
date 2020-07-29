@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
     'pagedown.apps.PagedownConfig',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -142,6 +144,29 @@ DATABASES['default'].update(db_from_env)
 
 #import django_heroku
 django_heroku.settings(locals())
+
+USE_S3 = os.getenv('USE_S3') == 'TRUE'
+
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('S3_BUCKET_NAME')
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_S3_CUSTOM_DOMAIN = f'{S3_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    AWS_LOCATION = 'media'
+    MEDIA_URL= f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+    DEFAULT_FILE_STORAGE= 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+#MEDIA_URL = '/media/'
+#
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #DJANGO_LOG_LEVEL=DEBUG
 

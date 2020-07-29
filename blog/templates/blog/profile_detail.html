@@ -1,8 +1,13 @@
 {% extends "base_generic.html" %}
 
+{% load static %}
+
 {% block content %}
 	
 	<div>
+	{% if profile.picture %}
+	<img src="{{ MEDIA_URL }}/{{ profile.picture }}" width=160 height=160 >
+	{% endif %}
 	<h1>{{ profile.user.last_name }}, {{ profile.user.first_name }}</h1>
 	<h2> was born on {{ profile.birth_date }} and lives in {{ profile.location }} </h2>
 	<p> {{ profile.bio }} </p>

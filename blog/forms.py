@@ -25,7 +25,7 @@ class UserForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('birth_date', 'location', 'bio')
+        fields = ('birth_date', 'location', 'bio', 'picture')
 
 from blog.models import Comment
 from pagedown.widgets import PagedownWidget

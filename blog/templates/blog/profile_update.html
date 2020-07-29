@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<form method="post" class="needs-validation" novalidate>
+<form method="post" class="needs-validation" novalidate enctype="multipart/form-data">
 	{% csrf_token %}
 
 	{% comment %}
@@ -74,6 +74,11 @@
 					loc.className += "form-control";
 					loc.placeholder = "{{ profile_form.location.help_text }}";
 				</script>
+				<div class="form-group col-md-5">
+					{{ profile_form.picture.errors }}
+					<label for="id_picture"> Picture: </label>
+					{{ profile_form.picture}}
+				</div>
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-12">

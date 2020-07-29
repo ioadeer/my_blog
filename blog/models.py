@@ -4,6 +4,11 @@ from django.urls import reverse
 from django.template.defaultfilters import slugify
 from django.core.exceptions import ObjectDoesNotExist
 
+# method to name path of static image
+# where profile is '/user_id/profile_picture/document_name
+# and image from post is '/user_id/slug/document_name
+
+
 # Create your models here.
 
 class Category(models.Model):
@@ -64,11 +69,19 @@ def create_slug(tempslug):
 
 from django.contrib.auth.models import User
 
+# adding profile picture media based on this tutorial
+# https://simpleisbetterthancomplex.com/tutorial/2016/08/01/how-to-upload-files-with-django.html
+
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/etc
+    return 'user_{0}/{1}'.format(instance.user.id, filename)
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length= 500, blank= True)
     location = models.CharField(max_length=30, blank= True)
     birth_date = models.DateField(null = True, blank = True)
+    picture = models.FileField(upload_to=user_directory_path, blank = True)
 
     def get_absolute_url(self):
         return reverse('profile-detail', args=[str(self.id)])
